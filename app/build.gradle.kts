@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     id("com.android.application")
@@ -6,6 +7,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
 }
+
 
 android {
     namespace = "io.github.antwhale.compose"
@@ -17,11 +19,19 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        android.buildFeatures.buildConfig = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        val keystoreFile = project.rootProject.file("gradle.properties")
+        val properties = Properties()
+        properties.load(keystoreFile.inputStream())
+        val apiKey = properties.getProperty("API_KEY") ?: "none"
+
+        buildConfigField("String", "API_KEY", apiKey)
     }
 
     buildTypes {
@@ -75,6 +85,8 @@ dependencies {
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.8.0")
 
     //navigation
     implementation("androidx.navigation:navigation-compose:2.6.0")
