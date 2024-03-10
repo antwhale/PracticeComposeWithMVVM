@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.antwhale.compose.models.TweetListItem
 import io.github.antwhale.compose.viewmodels.CategoryViewModel
@@ -32,7 +33,7 @@ import io.github.antwhale.compose.viewmodels.DetailViewModel
 
 @Composable
 fun DetailScreen(){
-    val detailViewModel: DetailViewModel = viewModel()
+    val detailViewModel: DetailViewModel = hiltViewModel()
     val tweets = detailViewModel.tweets.collectAsState()
     LazyColumn(content = {
         items(tweets.value) {
